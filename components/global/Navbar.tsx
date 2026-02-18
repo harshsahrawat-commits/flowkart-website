@@ -3,6 +3,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import Lenis from "lenis";
+import useIOSSafari from "@/hooks/useIOSSafari";
 
 const NAV_LINKS = [
   { label: "Services", href: "#services" },
@@ -16,6 +17,7 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState("");
   const [mobileOpen, setMobileOpen] = useState(false);
+  const isIOS = useIOSSafari();
 
   // Shrink on scroll
   useEffect(() => {
@@ -132,10 +134,19 @@ export default function Navbar() {
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
-            initial={{ clipPath: "circle(0% at calc(100% - 40px) 40px)" }}
-            animate={{ clipPath: "circle(150% at calc(100% - 40px) 40px)" }}
-            exit={{ clipPath: "circle(0% at calc(100% - 40px) 40px)" }}
-            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            initial={isIOS
+              ? { opacity: 0, scale: 0.95 }
+              : { clipPath: "circle(0% at calc(100% - 40px) 40px)" }
+            }
+            animate={isIOS
+              ? { opacity: 1, scale: 1 }
+              : { clipPath: "circle(150% at calc(100% - 40px) 40px)" }
+            }
+            exit={isIOS
+              ? { opacity: 0, scale: 0.95 }
+              : { clipPath: "circle(0% at calc(100% - 40px) 40px)" }
+            }
+            transition={{ duration: isIOS ? 0.3 : 0.5, ease: [0.22, 1, 0.36, 1] }}
             className="fixed inset-0 z-40 flex flex-col items-center justify-center gap-8 bg-void md:hidden"
           >
             {NAV_LINKS.map((link, i) => (

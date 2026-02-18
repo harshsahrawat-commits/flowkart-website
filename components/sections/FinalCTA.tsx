@@ -4,11 +4,13 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import MagneticButton from "@/components/ui/MagneticButton";
+import useIOSSafari from "@/hooks/useIOSSafari";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function FinalCTA() {
   const sectionRef = useRef<HTMLElement>(null);
+  const isIOS = useIOSSafari();
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -47,14 +49,14 @@ export default function FinalCTA() {
     >
       {/* Background glow + morphing blob (FIX 7) */}
       <div className="pointer-events-none absolute inset-0" aria-hidden="true">
-        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-[500px] w-[500px] rounded-full bg-accent/15 blur-[150px]" />
-        {/* Morphing blob */}
+        <div className={`absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-[500px] w-[500px] rounded-full bg-accent/15 ${isIOS ? "blur-[60px]" : "blur-[150px]"}`} />
+        {/* Morphing blob — static on iOS */}
         <div
-          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-[400px] w-[400px] opacity-[0.15] blur-[60px]"
+          className={`absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-[400px] w-[400px] opacity-[0.15] ${isIOS ? "blur-[40px]" : "blur-[60px]"}`}
           style={{
             background: "var(--color-accent, #00f0ff)",
             borderRadius: "60% 40% 30% 70% / 60% 30% 70% 40%",
-            animation: "morphBlob 8s ease-in-out infinite",
+            ...(!isIOS && { animation: "morphBlob 8s ease-in-out infinite" }),
           }}
         />
       </div>

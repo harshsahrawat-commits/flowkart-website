@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import Lenis from "lenis";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { isIOSSafari } from "@/hooks/useIOSSafari";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -15,6 +16,12 @@ export default function SmoothScroll({
   const lenisRef = useRef<Lenis | null>(null);
 
   useEffect(() => {
+    // Skip Lenis on iOS — native momentum scrolling is better
+    if (isIOSSafari()) {
+      (window as unknown as Record<string, unknown>).__lenis = null;
+      return;
+    }
+
     const lenis = new Lenis({
       duration: 1.2,
       smoothWheel: true,

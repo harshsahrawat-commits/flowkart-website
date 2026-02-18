@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import TextScramble from "@/components/ui/TextScramble";
+import useIOSSafari from "@/hooks/useIOSSafari";
 
 export default function Hero() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -11,6 +12,7 @@ export default function Hero() {
   const line2Ref = useRef<HTMLSpanElement>(null);
   const subtitleRef = useRef<HTMLParagraphElement>(null);
   const ctaRef = useRef<HTMLDivElement>(null);
+  const isIOS = useIOSSafari();
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -60,7 +62,7 @@ export default function Hero() {
       <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
         {/* Radial glow — centered behind headline */}
         <div
-          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-[600px] w-[600px] rounded-full blur-[150px] opacity-20"
+          className={`absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-[600px] w-[600px] rounded-full opacity-20 ${isIOS ? "blur-[60px]" : "blur-[150px]"}`}
           style={{ background: "var(--color-accent, #00f0ff)" }}
         />
 
@@ -76,12 +78,12 @@ export default function Hero() {
           }}
         />
 
-        {/* Animated floating orb for movement */}
+        {/* Animated floating orb for movement — static on iOS */}
         <div
-          className="absolute left-1/2 top-1/3 -translate-x-1/2 h-[400px] w-[400px] rounded-full blur-[120px] animate-pulse"
+          className={`absolute left-1/2 top-1/3 -translate-x-1/2 h-[400px] w-[400px] rounded-full ${isIOS ? "blur-[50px]" : "blur-[120px] animate-pulse"}`}
           style={{
             background: "rgba(0, 240, 255, 0.12)",
-            animationDuration: "4s",
+            ...(!isIOS && { animationDuration: "4s" }),
           }}
         />
       </div>
