@@ -1,0 +1,237 @@
+@import "tailwindcss";
+
+/* ═══════════════════════════════════════════════════════
+   FLOWKART DESIGN SYSTEM — Tailwind v4 @theme tokens
+   No tailwind.config.js — everything lives here (FIX 13)
+   ═══════════════════════════════════════════════════════ */
+
+@theme inline {
+  /* ── Color Primitives ── */
+  --color-void: #030303;
+  --color-void-card: #0a0a0f;
+  --color-void-subtle: #111118;
+  --color-text: #e4e4eb;
+  --color-text-muted: #5a5a6e;
+  --color-accent: #00f0ff;
+  --color-accent-glow: #00f0ff25;
+  --color-accent-dim: #00f0ff10;
+  --color-success: #00ff88;
+
+  /* ── Semantic Tokens ── */
+  --color-bg-primary: #030303;
+  --color-bg-secondary: #0a0a0f;
+  --color-bg-tertiary: #111118;
+  --color-border-default: rgba(255, 255, 255, 0.05);
+  --color-border-subtle: rgba(255, 255, 255, 0.03);
+
+  /* ── Typography Scale (1.250 — Major Third) ── */
+  --font-sans: var(--font-space-grotesk);
+  --font-mono: var(--font-jetbrains-mono);
+
+  /* ── Spacing ── */
+  --section-padding-y: clamp(4rem, 8vw, 8rem);
+  --section-padding-x: clamp(1rem, 4vw, 4rem);
+  --container-xl: 1280px;
+}
+
+/* ── CSS Custom Properties (non-Tailwind) ── */
+:root {
+  --fs-xs: 0.8rem;
+  --fs-sm: 0.889rem;
+  --fs-base: 1rem;
+  --fs-md: 1.25rem;
+  --fs-lg: 1.563rem;
+  --fs-xl: 1.953rem;
+  --fs-2xl: 2.441rem;
+  --fs-3xl: 3.052rem;
+  --fs-display: 4.768rem;
+
+  --leading-tight: 0.95;
+  --leading-snug: 1.1;
+  --leading-relaxed: 1.7;
+  --tracking-tight: -0.03em;
+  --tracking-wide: 0.05em;
+  --tracking-wider: 0.1em;
+}
+
+/* ── Base Styles ── */
+html {
+  scroll-margin-top: 80px;
+}
+
+body {
+  background-color: var(--color-void);
+  color: var(--color-text);
+  font-family: var(--font-space-grotesk), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* ── Fluid Headings ── */
+h1 {
+  font-size: clamp(2.5rem, 5vw + 1rem, 5rem);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  font-weight: 700;
+}
+
+h2 {
+  font-size: clamp(2rem, 3vw + 0.5rem, 3.5rem);
+  line-height: var(--leading-snug);
+  letter-spacing: var(--tracking-tight);
+  font-weight: 600;
+}
+
+h3 {
+  font-size: var(--fs-xl);
+  line-height: var(--leading-snug);
+  font-weight: 600;
+}
+
+/* ── Section scroll offset (FIX 14) ── */
+section[id] {
+  scroll-margin-top: 80px;
+}
+
+/* ── Noise Overlay ── */
+.noise-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.03;
+  mix-blend-mode: overlay;
+}
+
+/* ── Selection ── */
+::selection {
+  background-color: rgba(0, 240, 255, 0.2);
+  color: #fff;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-void);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* ── Reduced Motion (§5.4) ── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── Glass Card Utility ── */
+.glass-card {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 1rem;
+}
+
+/* ── Animated Gradient Border (FIX 4b) ── */
+.card-gradient-border {
+  position: relative;
+}
+
+.card-gradient-border::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    135deg,
+    rgba(0, 240, 255, 0.3),
+    transparent 40%,
+    transparent 60%,
+    rgba(0, 240, 255, 0.1)
+  );
+  background-size: 300% 300%;
+  background-position: 0% 0%;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  animation: gradient-rotate 4s linear infinite paused;
+  pointer-events: none;
+}
+
+.card-gradient-border:hover::before {
+  opacity: 1;
+  animation-play-state: running;
+}
+
+@keyframes gradient-rotate {
+  0% { background-position: 0% 0%; }
+  50% { background-position: 100% 100%; }
+  100% { background-position: 0% 0%; }
+}
+
+/* ── Morphing Blob (FIX 7a) ── */
+@keyframes morphBlob {
+  0%, 100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+  25% { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; }
+  50% { border-radius: 50% 60% 30% 60% / 30% 60% 70% 40%; }
+  75% { border-radius: 60% 30% 60% 40% / 70% 40% 50% 60%; }
+}
+
+/* ── Static Gradient Border Utility ── */
+.gradient-border {
+  background:
+    linear-gradient(var(--color-void-card), var(--color-void-card)) padding-box,
+    linear-gradient(135deg, var(--color-accent), transparent 60%) border-box;
+  border: 1px solid transparent;
+  border-radius: 1rem;
+}
+
+/* ── Fade Divider ── */
+.fade-divider {
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+}
+
+/* ── Eyebrow Label ── */
+.eyebrow {
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-size: var(--fs-xs);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wider);
+  color: var(--color-accent);
+}
+
+/* ── Gradient Text ── */
+.gradient-text {
+  background: linear-gradient(
+    to right,
+    #ffffff,
+    #d4d4d8,
+    #a1a1aa
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
