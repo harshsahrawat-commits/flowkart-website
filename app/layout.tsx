@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { clashDisplay, satoshi, jetbrainsMono } from './fonts'
+import { LenisProvider } from '@/components/layout/LenisProvider'
 import './globals.css'
 
 export const metadata: Metadata = {
@@ -22,7 +23,7 @@ export default function RootLayout({
         <a href="#main-content" className="skip-nav">
           Skip to main content
         </a>
-        {children}
+        <LenisProvider>{children}</LenisProvider>
       </body>
     </html>
   )
