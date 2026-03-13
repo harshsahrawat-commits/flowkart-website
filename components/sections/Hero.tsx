@@ -1,61 +1,13 @@
 'use client'
 
-import { useRef, useEffect, useState, forwardRef } from 'react'
+import { useRef } from 'react'
 import { useGSAP } from '@gsap/react'
 import { gsap, SplitText } from '@/components/animations/gsap-register'
 import { useReducedMotion } from '@/components/animations/useReducedMotion'
 import { MagneticButton } from '@/components/ui/MagneticButton'
 import { Button } from '@/components/ui/Button'
-import { AGENTS, TIMING, EASING } from '@/lib/constants'
-
-/* ---- Agent Ticker Sub-Component ---- */
-
-const AgentTicker = forwardRef<HTMLDivElement, { reducedMotion: boolean }>(
-  function AgentTicker({ reducedMotion }, ref) {
-    const [activeIndex, setActiveIndex] = useState(0)
-
-    // Ticker cycles regardless of reduced motion — it uses state, not GSAP.
-    // Reduced motion only disables the CSS transition on the opacity change.
-    useEffect(() => {
-      const interval = setInterval(() => {
-        setActiveIndex((prev) => (prev + 1) % AGENTS.length)
-      }, 2000)
-      return () => clearInterval(interval)
-    }, [])
-
-    return (
-      <div
-        ref={ref}
-        className="mt-12 flex flex-wrap items-center justify-center gap-x-1 gap-y-2 font-mono text-sm"
-        style={{ visibility: 'hidden' }}
-        aria-label={`Active agents: ${AGENTS.map((a) => a.name).join(', ')}`}
-      >
-        <span className="text-teal mr-1">▸</span>
-        {AGENTS.map((agent, i) => (
-          <span key={agent.name} className="flex items-center">
-            <span
-              className={`${reducedMotion ? '' : 'transition-all duration-500'} ${
-                i === activeIndex
-                  ? 'opacity-100 text-teal font-medium'
-                  : 'opacity-40 text-teal/60'
-              }`}
-              aria-current={i === activeIndex ? 'true' : undefined}
-            >
-              {agent.name}
-            </span>
-            {i < AGENTS.length - 1 && (
-              <span className="mx-1.5 opacity-30 text-teal">→</span>
-            )}
-          </span>
-        ))}
-        {/* ARIA live region announces active agent to screen readers */}
-        <span className="sr-only" aria-live="polite" aria-atomic="true">
-          Active agent: {AGENTS[activeIndex].name}
-        </span>
-      </div>
-    )
-  },
-)
+import { TIMING, EASING } from '@/lib/constants'
+import { LiveTerminal } from '@/components/sections/LiveTerminal'
 
 /* ---- Hero Section ---- */
 
@@ -226,8 +178,8 @@ export function Hero() {
           </Button>
         </div>
 
-        {/* Agent Ticker */}
-        <AgentTicker ref={tickerRef} reducedMotion={reducedMotion} />
+        {/* Live Terminal */}
+        <LiveTerminal ref={tickerRef} reducedMotion={reducedMotion} />
       </div>
     </section>
   )
