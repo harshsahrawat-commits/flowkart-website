@@ -167,6 +167,7 @@ export function Hero() {
   return (
     <section
       ref={containerRef}
+      id="hero"
       className="relative min-h-screen flex items-center justify-center px-6 pt-16 bg-cream"
     >
       <div className="max-w-4xl mx-auto text-center">

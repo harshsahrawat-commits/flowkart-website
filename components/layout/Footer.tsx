@@ -12,7 +12,7 @@ const FOOTER_LINKS = {
 
 export function Footer() {
   return (
-    <footer className="bg-navy text-cream">
+    <footer aria-label="Site footer" className="bg-navy text-cream">
       <div className="max-w-7xl mx-auto px-6 py-16">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
           {/* Logo + tagline */}
