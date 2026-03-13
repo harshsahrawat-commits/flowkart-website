@@ -4,7 +4,11 @@ import { useRef } from 'react'
 import { useGSAP } from '@gsap/react'
 import { gsap, ScrollTrigger } from '@/components/animations/gsap-register'
 import { useReducedMotion } from '@/components/animations/useReducedMotion'
-import { WORKFLOW_NODES, EASING } from '@/lib/constants'
+// import { WORKFLOW_NODES } from '@/lib/constants'  // Removed in Task 4
+import { EASING } from '@/lib/constants'
+
+// TODO Task 4: WORKFLOW_NODES removed — component will be rewritten
+const WORKFLOW_NODES: { id: string; label: string; color: 'navy' | 'teal' | 'orange'; tooltip: string }[] = []
 
 const NODE_COLORS = {
   navy: 'bg-navy text-cream',
