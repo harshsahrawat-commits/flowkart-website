@@ -1,0 +1,93 @@
+@import "tailwindcss";
+
+/* ============================================
+   Flowkart Design System Tokens
+   Reference: CREATIVE-BRIEF.md Sections 3-5
+   ============================================ */
+
+@theme {
+  /* --- Colors (Section 3.1) --- */
+  --color-cream: #FFECD1;
+  --color-cream-light: #FFF5E6;
+  --color-navy: #001524;
+  --color-sienna: #78290F;
+  --color-teal: #15616D;
+  --color-orange: #FF7D00;
+  --color-tan: #E8DCC8;
+
+  /* --- Font Families (Section 4.1) --- */
+  /* CSS variables injected by next/font — referenced here for Tailwind utilities */
+  --font-display: var(--font-clash-display), ui-sans-serif, system-ui, sans-serif;
+  --font-body: var(--font-satoshi), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
+
+  /* --- Animation Timing (Section 5.3) --- */
+  --ease-default: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --ease-entrance: cubic-bezier(0.16, 1, 0.3, 1);
+  --duration-micro: 0.3s;
+  --duration-reveal: 0.6s;
+  --duration-section: 1.0s;
+}
+
+/* --- Base Styles --- */
+body {
+  font-family: var(--font-body);
+  color: var(--color-sienna);
+  background-color: var(--color-cream);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  color: var(--color-navy);
+  font-weight: 600;
+}
+
+::selection {
+  background-color: var(--color-teal);
+  color: var(--color-cream);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-teal);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* --- Skip Navigation (a11y) --- */
+.skip-nav {
+  position: absolute;
+  top: -100%;
+  left: 0;
+  z-index: 100;
+  padding: 1rem;
+  background: var(--color-navy);
+  color: var(--color-cream);
+}
+.skip-nav:focus {
+  top: 0;
+}
+
+/* --- Link Hover Underline (Section 5.7) --- */
+.link-underline {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-position: 0% 100%;
+  background-repeat: no-repeat;
+  background-size: 0% 1.5px;
+  transition: background-size var(--duration-micro) var(--ease-default);
+  padding-bottom: 2px;
+}
+.link-underline:hover {
+  background-size: 100% 1.5px;
+}
+
+/* --- Reduced Motion Global Override --- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
