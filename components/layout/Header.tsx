@@ -70,29 +70,29 @@ export function Header() {
             : 'bg-transparent'
         }`}
       >
-        <nav aria-label="Main navigation" className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+        <nav aria-label="Main navigation" className="max-w-7xl mx-auto px-6 h-[4.5rem] flex items-center justify-between">
           {/* Logo */}
           <a
             href="#"
-            className="font-display font-semibold text-lg text-navy tracking-[0.04em]"
+            className="font-display font-semibold text-xl text-navy tracking-[0.04em]"
           >
             FLOWKART
           </a>
 
           {/* Desktop Nav */}
-          <div className="hidden md:flex items-center gap-8">
+          <div className="hidden md:flex items-center gap-10">
             {NAV_LINKS.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
-                className="font-body font-medium text-sm text-navy hover:text-teal link-underline transition-colors duration-300"
+                className="font-body font-medium text-base text-navy hover:text-teal link-underline transition-colors duration-300"
               >
                 {link.label}
               </a>
             ))}
             <a
               href="#contact"
-              className="px-5 py-2.5 bg-orange text-white font-body font-bold text-sm rounded-lg hover:bg-orange/90 transition-colors duration-300"
+              className="px-6 py-3 bg-orange text-white font-body font-bold text-base rounded-lg hover:bg-orange/90 transition-colors duration-300"
             >
               Book a Call
             </a>

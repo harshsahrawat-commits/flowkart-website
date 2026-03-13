@@ -145,10 +145,11 @@ export function Hero() {
 
       // 1.6s — CTA buttons slide up
       if (ctaRef.current) {
-        tl.fromTo(
+        gsap.set(ctaRef.current, { autoAlpha: 1 })
+        gsap.set(ctaRef.current.children, { opacity: 0, y: 20 })
+        tl.to(
           ctaRef.current.children,
-          { opacity: 0, y: 20 },
-          { autoAlpha: 1, y: 0, duration: 0.5, stagger: 0.1 },
+          { opacity: 1, y: 0, duration: 0.5, stagger: 0.1 },
           1.6,
         )
       }
@@ -168,7 +169,7 @@ export function Hero() {
     <section
       ref={containerRef}
       id="hero"
-      className="relative min-h-screen flex items-center justify-center px-6 pt-16 bg-cream"
+      className="relative min-h-screen flex items-center justify-center px-6 pt-20 bg-cream"
     >
       <div className="max-w-4xl mx-auto text-center">
         {/* Overline */}
