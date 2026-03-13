@@ -47,7 +47,7 @@ The alternating Cream/Navy rhythm creates strong section boundaries. Two consecu
 - Logo: `text-xl` (1.25rem), `font-semibold`
 - Nav links: `text-base` (1rem), `font-medium`
 - CTA button: `text-base`, padding `px-6 py-3`, `rounded-lg`
-- Navbar height: `h-18` (4.5rem) or `h-20` if needed for breathing room
+- Navbar height: `h-[4.5rem]` (custom value — Tailwind 4 has no `h-18` utility)
 
 ### Files Changed
 - `components/layout/Header.tsx` — update className strings for logo, nav links, CTA button, and nav container height
@@ -99,7 +99,7 @@ A dark mini-terminal panel embedded at the bottom of the hero section. It simula
 ### Technical Implementation
 - Replace `AgentTicker` component entirely (same ref name `tickerRef` for hero timeline integration)
 - Use GSAP timeline for the typing + agent status transitions
-- Use `setInterval` for the loop cycling (same pattern as current ticker)
+- Use GSAP timeline's `onComplete` callback to restart with the next command (avoids drift from mixing `setInterval` with GSAP timelines)
 - Terminal container: `max-w-md mx-auto`, dark background `bg-navy`, `rounded-xl`, `shadow-2xl`
 - Monospace font throughout (`font-mono`)
 - Respect `reducedMotion`: show terminal fully populated, no typing animation
@@ -166,9 +166,8 @@ Headline:  "Agents that think, communicate, and adapt"
 
 **Background layer:**
 - OpenArt-generated abstract image (user already generated this — dark navy with flowing teal + orange energy streams, geometric network shapes, bokeh particles)
-- Applied as `background-image` on a container div
-- `background-size: cover`, `background-position: center`
-- `opacity: 0.5` (adjustable during implementation)
+- Use `next/image` with `fill`, `sizes="40vw"`, `className="object-cover"` inside a `relative` container for Next.js optimization + lazy loading
+- `opacity: 0.5` (adjustable via wrapper div during implementation)
 - Image file: `public/images/workflow-bg.webp` (user provides from OpenArt export)
 
 **Code rain overlay:**
@@ -268,10 +267,10 @@ Below the terminal, a horizontal row of 6 agent icons (small rounded squares wit
 - Section unpins
 
 ### Typewriter Implementation
-- Each message is a string split into characters
-- GSAP `textContent`-based approach or clip-path reveal
-- Scrub-linked: scroll position determines how many characters are visible
-- Cursor character (`▊`) follows the typing position
+- Each message rendered as a full-width span with `clip-path: inset(0 X% 0 0)` where X is animated via GSAP
+- `clip-path` approach (not `textContent`) — gives smoother visual results with scrub since it doesn't jump by whole characters
+- Scrub-linked: scroll position determines the clip percentage (100% hidden → 0% fully revealed)
+- Cursor character (`▊`) positioned absolutely at the clip edge, translates with the reveal
 
 ### Mobile Behavior (< 768px)
 - No pinning — terminal panel is static
@@ -381,7 +380,7 @@ All assets are static images (no video). User generates via OpenArt Advanced pla
 ## Performance Considerations
 
 - Two pinned ScrollTrigger sections (Workflow + Services) — test for smooth scrub on mid-range devices
-- Code rain: limit to ~8-10 visible lines at a time, recycle DOM nodes (don't create new ones)
-- Typewriter in Services: use GSAP `textContent` approach (no DOM manipulation per character)
+- Code rain: use a fixed pool of ~10 DOM elements, reposition each from bottom when it scrolls past the top fade mask (recycle, don't create/destroy)
+- Typewriter in Services: use `clip-path` reveal approach (smooth scrub, no DOM manipulation per character)
 - OpenArt images: lazy-load all except hero texture, use WebP format
 - Test total page weight — target < 1.5MB first load including all images
