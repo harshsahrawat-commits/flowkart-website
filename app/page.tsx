@@ -1,6 +1,7 @@
 import { Hero } from '@/components/sections/Hero'
 import { AgentWorkflow } from '@/components/sections/AgentWorkflow'
 import { Services } from '@/components/sections/Services'
+import { Process } from '@/components/sections/Process'
 import { Footer } from '@/components/layout/Footer'
 
 export default function Home() {
@@ -10,6 +11,7 @@ export default function Home() {
         <Hero />
         <AgentWorkflow />
         <Services />
+        <Process />
       </main>
       <Footer />
     </>
