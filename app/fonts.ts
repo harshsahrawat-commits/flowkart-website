@@ -19,10 +19,10 @@ export const satoshi = localFont({
   weight: '300 900',
 })
 
-// Priority 3: Optional — accent mono font (non-critical)
-// font-display: optional — use only if already cached
+// Priority 3: Swap — mono font used in terminal sections
+// font-display: swap — content readable immediately, swaps when loaded
 export const jetbrainsMono = JetBrains_Mono({
   subsets: ['latin'],
   variable: '--font-jetbrains-mono',
-  display: 'optional',
+  display: 'swap',
 })
