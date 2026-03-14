@@ -380,7 +380,7 @@ Create `components/sections/LiveTerminal.tsx`:
 ```tsx
 'use client'
 
-import { useRef, useState, useCallback, useEffect, forwardRef } from 'react'
+import { useRef, useState, useCallback, forwardRef } from 'react'
 import { useGSAP } from '@gsap/react'
 import { gsap } from '@/components/animations/gsap-register'
 import { TERMINAL_COMMANDS } from '@/lib/constants'
@@ -422,14 +422,12 @@ export const LiveTerminal = forwardRef<HTMLDivElement, LiveTerminalProps>(
       () => currentCommand.agents.map(() => 'queued'),
     )
 
-    // Reset statuses when command changes
-    useEffect(() => {
-      setAgentStatuses(currentCommand.agents.map(() => 'queued'))
-    }, [commandIndex, currentCommand.agents])
-
     useGSAP(
       () => {
         if (!containerRef.current || !commandRef.current) return
+
+        // Reset statuses when command changes (inside useGSAP to avoid lint: set-state-in-effect)
+        setAgentStatuses(currentCommand.agents.map(() => 'queued'))
 
         // Reduced motion: show everything immediately
         if (reducedMotion) {
@@ -494,20 +492,18 @@ export const LiveTerminal = forwardRef<HTMLDivElement, LiveTerminalProps>(
             agentStart,
           )
 
-          // Set to waiting (if not first)
-          if (i > 0) {
-            tl.call(
-              () => {
-                setAgentStatuses((prev) => {
-                  const next = [...prev]
-                  next[i] = 'waiting'
-                  return next
-                })
-              },
-              [],
-              agentStart,
-            )
-          }
+          // Set to waiting
+          tl.call(
+            () => {
+              setAgentStatuses((prev) => {
+                const next = [...prev]
+                next[i] = 'waiting'
+                return next
+              })
+            },
+            [],
+            agentStart,
+          )
 
           // Set to active
           tl.call(
@@ -515,10 +511,6 @@ export const LiveTerminal = forwardRef<HTMLDivElement, LiveTerminalProps>(
               setAgentStatuses((prev) => {
                 const next = [...prev]
                 next[i] = 'active'
-                // Set next agent to waiting
-                if (i + 1 < currentCommand.agents.length) {
-                  next[i + 1] = 'waiting'
-                }
                 return next
               })
             },
@@ -1590,18 +1582,23 @@ Enable `prefers-reduced-motion: reduce` in browser devtools:
 Run: `npx tsc --noEmit`
 Expected: No type errors
 
-- [ ] **Step 6: Build check**
+- [ ] **Step 6: Lint check**
+
+Run: `npm run lint`
+Expected: No lint errors (catches unused imports, style violations that `tsc` misses)
+
+- [ ] **Step 7: Build check**
 
 Run: `npm run build`
 Expected: Build succeeds with no errors
 
-- [ ] **Step 7: Final commit (if any fixes were needed)**
+- [ ] **Step 8: Final commit (if any fixes were needed)**
 
 ```bash
 git add -A
 git commit -m "fix: address issues found during full-page scroll test"
 ```
 
-- [ ] **Step 8: Summary commit message (if no fixes needed)**
+- [ ] **Step 9: Summary commit message (if no fixes needed)**
 
-If no fixes were needed in Steps 1-6, skip this step. All changes are already committed in Tasks 1-6.
+If no fixes were needed in Steps 1-7, skip this step. All changes are already committed in Tasks 1-6.
