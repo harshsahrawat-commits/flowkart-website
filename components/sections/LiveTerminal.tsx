@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef, useState, useCallback, useEffect, forwardRef } from 'react'
+import { useRef, useState, useCallback, forwardRef } from 'react'
 import { useGSAP } from '@gsap/react'
 import { gsap } from '@/components/animations/gsap-register'
 import { TERMINAL_COMMANDS } from '@/lib/constants'
@@ -42,14 +42,12 @@ export const LiveTerminal = forwardRef<HTMLDivElement, LiveTerminalProps>(
       () => currentCommand.agents.map(() => 'queued'),
     )
 
-    // Reset statuses when command changes
-    useEffect(() => {
-      setAgentStatuses(currentCommand.agents.map(() => 'queued'))
-    }, [commandIndex, currentCommand.agents])
-
     useGSAP(
       () => {
         if (!containerRef.current || !commandRef.current) return
+
+        // Reset statuses when command changes
+        setAgentStatuses(currentCommand.agents.map(() => 'queued'))
 
         // Reduced motion: show everything immediately
         if (reducedMotion) {
@@ -114,20 +112,18 @@ export const LiveTerminal = forwardRef<HTMLDivElement, LiveTerminalProps>(
             agentStart,
           )
 
-          // Set to waiting (if not first)
-          if (i > 0) {
-            tl.call(
-              () => {
-                setAgentStatuses((prev) => {
-                  const next = [...prev]
-                  next[i] = 'waiting'
-                  return next
-                })
-              },
-              [],
-              agentStart,
-            )
-          }
+          // Set to waiting
+          tl.call(
+            () => {
+              setAgentStatuses((prev) => {
+                const next = [...prev]
+                next[i] = 'waiting'
+                return next
+              })
+            },
+            [],
+            agentStart,
+          )
 
           // Set to active
           tl.call(
@@ -135,10 +131,6 @@ export const LiveTerminal = forwardRef<HTMLDivElement, LiveTerminalProps>(
               setAgentStatuses((prev) => {
                 const next = [...prev]
                 next[i] = 'active'
-                // Set next agent to waiting
-                if (i + 1 < currentCommand.agents.length) {
-                  next[i + 1] = 'waiting'
-                }
                 return next
               })
             },
