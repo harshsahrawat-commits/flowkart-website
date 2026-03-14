@@ -91,7 +91,9 @@ export function Header() {
               </a>
             ))}
             <a
-              href="#contact"
+              href="https://cal.com/harshsahrawat/30min"
+              target="_blank"
+              rel="noopener noreferrer"
               className="px-6 py-3 bg-orange text-white font-body font-bold text-base rounded-lg hover:bg-orange/90 transition-colors duration-300"
             >
               Book a Call
@@ -143,7 +145,9 @@ export function Header() {
             </a>
           ))}
           <a
-            href="#contact"
+            href="https://cal.com/harshsahrawat/30min"
+            target="_blank"
+            rel="noopener noreferrer"
             className="mt-4 px-8 py-3 bg-orange text-white font-body font-bold text-base rounded-lg"
             onClick={() => setMobileOpen(false)}
           >

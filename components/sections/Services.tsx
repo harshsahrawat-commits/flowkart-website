@@ -4,165 +4,151 @@ import { useRef } from 'react'
 import { useGSAP } from '@gsap/react'
 import { gsap, ScrollTrigger } from '@/components/animations/gsap-register'
 import { useReducedMotion } from '@/components/animations/useReducedMotion'
-import { SCENARIO_MESSAGES, AGENTS } from '@/lib/constants'
+import { SCENARIO_STEPS, EASING } from '@/lib/constants'
+import Image from 'next/image'
 
-const AGENT_LETTER: Record<string, string> = {
-  You: 'You',
-  Research: 'R',
-  Marketing: 'M',
-  Copywriter: 'C',
-  Outreach: 'O',
-  Finance: 'F',
-  Development: 'D',
-  Results: '✓',
+// ---------------------------------------------------------------------------
+// Flatten SCENARIO_STEPS into a deterministic list for rendering + animation.
+// Computed once at module scope (data is static).
+// ---------------------------------------------------------------------------
+
+type FlatItem =
+  | { type: 'command'; text: string }
+  | { type: 'agent-header'; agent: string }
+  | { type: 'substep'; text: string; isLast: boolean }
+  | { type: 'result'; text: string }
+
+const FLAT_ITEMS: FlatItem[] = []
+
+for (const step of SCENARIO_STEPS) {
+  if (step.type === 'command') {
+    FLAT_ITEMS.push({ type: 'command', text: step.text })
+  } else if (step.type === 'result') {
+    FLAT_ITEMS.push({ type: 'result', text: step.text })
+  } else {
+    FLAT_ITEMS.push({ type: 'agent-header', agent: step.agent })
+    step.substeps.forEach((sub, j) => {
+      FLAT_ITEMS.push({
+        type: 'substep',
+        text: sub,
+        isLast: j === step.substeps.length - 1,
+      })
+    })
+  }
 }
 
-const MSG_BG: Record<string, string> = {
-  orange: 'bg-orange/10 border-orange/20',
-  teal: 'bg-teal/10 border-teal/20',
-}
+/** Seconds to hold the completed state before restarting */
+const LOOP_HOLD = 3
 
-const ICON_BG: Record<string, string> = {
-  orange: 'bg-orange',
-  teal: 'bg-teal',
-}
+// ---------------------------------------------------------------------------
+// Component
+// ---------------------------------------------------------------------------
 
 export function Services() {
   const sectionRef = useRef<HTMLElement>(null)
-  const messageRefs = useRef<(HTMLDivElement | null)[]>([])
-  const clipRefs = useRef<(HTMLSpanElement | null)[]>([])
-  const cursorRefs = useRef<(HTMLSpanElement | null)[]>([])
+  const stepRefs = useRef<(HTMLDivElement | null)[]>([])
+  const dotRefs = useRef<(HTMLSpanElement | null)[]>([])
   const reducedMotion = useReducedMotion()
 
   useGSAP(
     () => {
       if (!sectionRef.current) return
 
+      const steps = stepRefs.current
+      const dots = dotRefs.current
+
       if (reducedMotion) {
-        // Show everything immediately
-        messageRefs.current.forEach((el) => {
+        steps.forEach((el) => {
           if (el) gsap.set(el, { autoAlpha: 1 })
-        })
-        clipRefs.current.forEach((el) => {
-          if (el) gsap.set(el, { clipPath: 'inset(0 0% 0 0)' })
-        })
-        cursorRefs.current.forEach((el) => {
-          if (el) gsap.set(el, { autoAlpha: 0 })
         })
         return
       }
 
-      const mm = gsap.matchMedia()
-
-      // --- DESKTOP: Pinned scroll with typewriter ---
-      mm.add('(min-width: 768px)', () => {
-        // Hide all messages initially
-        messageRefs.current.forEach((el) => {
-          if (el) gsap.set(el, { autoAlpha: 0 })
-        })
-        clipRefs.current.forEach((el) => {
-          if (el) gsap.set(el, { clipPath: 'inset(0 100% 0 0)' })
-        })
-        cursorRefs.current.forEach((el) => {
-          if (el) gsap.set(el, { autoAlpha: 0 })
-        })
-
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: 'top top',
-            end: '+=250%',
-            pin: true,
-            scrub: 1,
-            anticipatePin: 1,
-          },
-        })
-
-        // Define scroll segments for each message
-        const segments = [
-          { start: 0, end: 0.1 },      // You
-          { start: 0.1, end: 0.3 },     // Research
-          { start: 0.3, end: 0.5 },     // Marketing
-          { start: 0.5, end: 0.7 },     // Copywriter
-          { start: 0.7, end: 0.85 },    // Outreach
-          { start: 0.85, end: 1.0 },    // Results
-        ]
-
-        SCENARIO_MESSAGES.forEach((msg, i) => {
-          const seg = segments[i]
-          const msgEl = messageRefs.current[i]
-          const clipEl = clipRefs.current[i]
-          const cursorEl = cursorRefs.current[i]
-
-          if (!msgEl || !clipEl) return
-
-          // Show message container
-          tl.to(msgEl, { autoAlpha: 1, duration: 0.01 }, seg.start)
-
-          // Show cursor
-          if (cursorEl) {
-            tl.to(cursorEl, { autoAlpha: 1, duration: 0.01 }, seg.start)
-          }
-
-          // Typewriter reveal via clip-path
-          tl.to(
-            clipEl,
-            {
-              clipPath: 'inset(0 0% 0 0)',
-              duration: seg.end - seg.start - 0.02,
-              ease: 'none',
-            },
-            seg.start + 0.01,
-          )
-
-          // Hide cursor after reveal
-          if (cursorEl) {
-            tl.to(cursorEl, { autoAlpha: 0, duration: 0.01 }, seg.end - 0.01)
-          }
-
-          // Highlight agent in strip (skip "You" and "Results" — they're not in the strip)
-          const agentName = msg.agent
-          if (agentName !== 'You' && agentName !== 'Results') {
-            const stripEls = sectionRef.current?.querySelectorAll('.agent-strip-icon')
-            if (stripEls) {
-              stripEls.forEach((el) => {
-                const name = el.getAttribute('data-agent')
-                if (name === agentName) {
-                  tl.to(el, { opacity: 1, boxShadow: '0 0 16px rgba(21,97,109,0.4)', duration: 0.05 }, seg.start)
-                  tl.to(el, { boxShadow: '0 0 0px transparent', duration: 0.05 }, seg.end)
-                }
-              })
-            }
-          }
-        })
+      // Initial hidden state
+      steps.forEach((el) => {
+        if (el) gsap.set(el, { autoAlpha: 0, y: 8 })
       })
 
-      // --- MOBILE: Simple scroll reveals ---
-      mm.add('(max-width: 767px)', () => {
-        messageRefs.current.forEach((el) => {
-          if (!el) return
-          gsap.fromTo(
-            el,
-            { autoAlpha: 0, y: 20 },
-            {
-              autoAlpha: 1,
-              y: 0,
-              duration: 0.6,
-              scrollTrigger: { trigger: el, start: 'top 85%' },
-            },
-          )
-        })
-        // Show all text immediately on mobile (no typewriter)
-        clipRefs.current.forEach((el) => {
-          if (el) gsap.set(el, { clipPath: 'inset(0 0% 0 0)' })
-        })
-        cursorRefs.current.forEach((el) => {
-          if (el) gsap.set(el, { autoAlpha: 0 })
-        })
+      // ---------------------------------------------------------------
+      // Build a looping, time-based timeline (paused until in view).
+      // Uses fromTo() so start values are baked in and replay correctly.
+      // ---------------------------------------------------------------
+      const tl = gsap.timeline({
+        paused: true,
+        repeat: -1,
+        repeatDelay: LOOP_HOLD,
+      })
+
+      const FROM = { autoAlpha: 0, y: 8 }
+      let dotIdx = 0
+      let t = 0
+
+      FLAT_ITEMS.forEach((item, i) => {
+        const el = steps[i]
+        if (!el) return
+
+        switch (item.type) {
+          case 'command':
+            tl.fromTo(el, { ...FROM }, { autoAlpha: 1, y: 0, duration: 0.3, ease: EASING.entrance }, t)
+            t += 0.5
+            break
+
+          case 'agent-header': {
+            tl.fromTo(el, { ...FROM }, { autoAlpha: 1, y: 0, duration: 0.25, ease: EASING.entrance }, t)
+            // Start dot pulsing
+            const dot = dots[dotIdx]
+            if (dot) {
+              tl.call(() => { dot.classList.add('dot-pulse') }, [], t + 0.15)
+            }
+            t += 0.25
+            break
+          }
+
+          case 'substep':
+            tl.fromTo(el, { ...FROM }, { autoAlpha: 1, y: 0, duration: 0.2, ease: EASING.entrance }, t)
+            // On last substep, stop dot pulse and solidify
+            if (item.isLast) {
+              const dot = dots[dotIdx]
+              if (dot) {
+                tl.call(() => { dot.classList.remove('dot-pulse') }, [], t + 0.15)
+              }
+              dotIdx++
+              t += 0.3
+            } else {
+              t += 0.12
+            }
+            break
+
+          case 'result':
+            tl.fromTo(el, { ...FROM }, { autoAlpha: 1, y: 0, duration: 0.4, ease: EASING.entrance }, t)
+            break
+        }
+      })
+
+      // Clean up dot-pulse classes at the very start of each cycle
+      tl.call(() => {
+        dots.forEach((el) => { if (el) el.classList.remove('dot-pulse') })
+      }, [], 0)
+
+      // ---------------------------------------------------------------
+      // ScrollTrigger: play when visible, pause when off-screen,
+      // restart fresh each time the section scrolls into view.
+      // ---------------------------------------------------------------
+      ScrollTrigger.create({
+        trigger: sectionRef.current,
+        start: 'top 75%',
+        end: 'bottom 10%',
+        onEnter: () => tl.restart(),
+        onEnterBack: () => tl.restart(),
+        onLeave: () => tl.pause(),
+        onLeaveBack: () => tl.pause(),
       })
     },
     { scope: sectionRef, dependencies: [reducedMotion] },
   )
+
+  // Track dot ref index during render
+  let dotIdx = 0
 
   return (
     <section
@@ -170,8 +156,13 @@ export function Services() {
       id="services"
       className="relative bg-cream-light overflow-hidden"
     >
+      {/* Ambient texture overlay (matches Hero) */}
+      <div className="absolute inset-0 opacity-20" aria-hidden="true">
+        <Image src="/images/hero-texture.webp" alt="" fill className="object-cover" loading="lazy" />
+      </div>
+
       {/* Section Header */}
-      <div className="pt-24 pb-16 px-6 text-center">
+      <div className="relative pt-24 pb-16 px-6 text-center">
         <p className="font-mono text-teal text-[0.875rem] uppercase tracking-[0.12em] mb-4">
           See It In Action
         </p>
@@ -188,7 +179,7 @@ export function Services() {
       </div>
 
       {/* Terminal Panel */}
-      <div className="max-w-2xl mx-auto px-6 pb-12">
+      <div className="relative max-w-3xl mx-auto px-6 pb-24">
         <div className="bg-navy rounded-xl shadow-2xl overflow-hidden">
           {/* Window Chrome */}
           <div className="flex items-center gap-1.5 px-4 py-2.5 border-b border-teal/10">
@@ -200,67 +191,76 @@ export function Services() {
             </span>
           </div>
 
-          {/* Messages */}
-          <div className="px-4 py-4 flex flex-col gap-3 min-h-[300px]">
-            {SCENARIO_MESSAGES.map((msg, i) => (
-              <div
-                key={i}
-                ref={(el) => { messageRefs.current[i] = el }}
-                className="flex items-start gap-2"
-              >
-                {/* Agent Icon */}
-                <div
-                  className={`w-7 h-7 rounded-lg ${ICON_BG[msg.color]} flex items-center justify-center shrink-0`}
-                >
-                  <span className="text-white text-[9px] font-bold font-mono">
-                    {AGENT_LETTER[msg.agent]}
-                  </span>
-                </div>
+          {/* Terminal Content */}
+          <div className="px-5 py-5 md:px-6 md:py-6 font-mono text-[12.5px] md:text-[13.5px] leading-relaxed">
+            {FLAT_ITEMS.map((item, i) => {
+              const setRef = (el: HTMLDivElement | null) => {
+                stepRefs.current[i] = el
+              }
 
-                {/* Message Bubble */}
-                <div
-                  className={`${MSG_BG[msg.color]} border rounded-[0_10px_10px_10px] px-3 py-2 relative flex-1`}
-                >
-                  <span
-                    ref={(el) => { clipRefs.current[i] = el }}
-                    className="font-mono text-[11px] text-cream leading-relaxed block"
-                    style={{ clipPath: 'inset(0 100% 0 0)' }}
-                  >
-                    {msg.text}
-                  </span>
-                  <span
-                    ref={(el) => { cursorRefs.current[i] = el }}
-                    className="text-teal text-xs absolute"
-                    style={{ visibility: 'hidden' }}
-                    aria-hidden="true"
-                  >
-                    ▊
-                  </span>
-                </div>
-              </div>
-            ))}
+              switch (item.type) {
+                case 'command':
+                  return (
+                    <div key={i} ref={setRef} className="mb-5">
+                      <span className="text-cream/35">$ </span>
+                      <span className="text-orange">{item.text}</span>
+                    </div>
+                  )
+
+                case 'agent-header': {
+                  const di = dotIdx++
+                  return (
+                    <div
+                      key={i}
+                      ref={setRef}
+                      className="flex items-center gap-2 mt-4 first:mt-0"
+                    >
+                      <span
+                        ref={(el) => { dotRefs.current[di] = el }}
+                        className="text-teal text-[10px]"
+                      >
+                        ●
+                      </span>
+                      <span className="text-cream font-semibold tracking-wide">
+                        {item.agent}
+                      </span>
+                    </div>
+                  )
+                }
+
+                case 'substep':
+                  return (
+                    <div
+                      key={i}
+                      ref={setRef}
+                      className={`flex items-start gap-2 pl-[18px] ${item.isLast ? 'mb-1' : ''}`}
+                    >
+                      <span className="text-cream/15 select-none leading-relaxed">
+                        ⎿
+                      </span>
+                      <span className="text-cream/50">{item.text}</span>
+                    </div>
+                  )
+
+                case 'result':
+                  return (
+                    <div
+                      key={i}
+                      ref={setRef}
+                      className="mt-5 pt-3 border-t border-cream/8"
+                    >
+                      <span className="text-orange font-medium">
+                        ✓ {item.text}
+                      </span>
+                    </div>
+                  )
+
+                default:
+                  return null
+              }
+            })}
           </div>
         </div>
-      </div>
-
-      {/* Agent Strip */}
-      <div className="flex flex-wrap justify-center gap-3 px-6 pb-24">
-        {AGENTS.map((agent) => (
-          <div
-            key={agent.name}
-            data-agent={agent.name}
-            className="agent-strip-icon flex flex-col items-center gap-1 opacity-30 transition-opacity"
-          >
-            <div className="w-9 h-9 rounded-lg bg-teal flex items-center justify-center">
-              <span className="text-white text-xs font-bold font-mono">
-                {agent.name.charAt(0)}
-              </span>
-            </div>
-            <span className="font-body text-[10px] text-navy">
-              {agent.name}
-            </span>
-          </div>
-        ))}
       </div>
     </section>
   )

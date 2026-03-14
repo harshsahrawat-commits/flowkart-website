@@ -64,6 +64,7 @@ export function CTASection() {
           },
         },
       )
+
     },
     { scope: sectionRef, dependencies: [reducedMotion] },
   )
@@ -72,7 +73,7 @@ export function CTASection() {
     <section
       ref={sectionRef}
       id="contact"
-      className="py-32 px-6"
+      className="relative py-32 px-6 overflow-hidden"
       style={{
         backgroundColor: reducedMotion ? '#15616D' : '#FFECD1',
       }}
@@ -102,7 +103,9 @@ export function CTASection() {
           <Button
             variant="primary"
             size="lg"
-            href="mailto:hello@flowkart.ai"
+            href="https://cal.com/harshsahrawat/30min"
+            target="_blank"
+            rel="noopener noreferrer"
             className="bg-orange text-white hover:bg-orange/90"
           >
             Book a Discovery Call

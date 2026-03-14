@@ -127,88 +127,100 @@ export const TERMINAL_COMMANDS = [
 ] as const
 
 // ============================================
-// Agent Workflow Benefits
-// Reference: Design Spec Section 3
+// Agent Workflow Comparison Rows
+// Reference: Design Spec — AgentWorkflow Redesign
 // ============================================
 
-export const WORKFLOW_BENEFITS = [
+export const COMPARISON_ROWS = [
   {
-    id: 'reasoning',
-    category: 'Reasoning',
-    headline: 'They break problems down',
-    description: "LangGraph's stateful architecture lets agents decompose complex goals into sub-tasks — evaluating options the way a senior strategist would.",
-    borderColor: 'teal', // #15616D
+    id: 'quality',
+    label: 'Quality',
+    icon: '🎯',
+    oldWay: 'Generic, one-size-fits-all outputs',
+    newWay: 'Research-backed content tailored to your market',
   },
   {
-    id: 'communication',
-    category: 'Communication',
-    headline: 'They share what they learn',
-    description: 'Real-time message passing means zero information silos. Every agent sees what others discover — decisions are made with full context.',
-    borderColor: 'orange', // #FF7D00
+    id: 'scale',
+    label: 'Scale',
+    icon: '⚡',
+    oldWay: 'One task, one tool, one output',
+    newWay: 'Entire workflows running in parallel',
   },
   {
-    id: 'adaptation',
-    category: 'Adaptation',
-    headline: 'They evolve with your business',
-    description: 'Graph-based orchestration means adding, removing, or re-routing agents as your needs change. Your AI team scales with your business.',
-    borderColor: 'cream', // #FFECD1
-  },
-  {
-    id: 'custom',
-    category: 'Custom Teams',
-    headline: 'Built around your workflows',
-    description: 'Not a template — a bespoke agent system designed around your specific business processes and workflows.',
-    borderColor: 'teal', // #15616D
+    id: 'adaptability',
+    label: 'Adaptability',
+    icon: '🔄',
+    oldWay: 'Breaks when things change',
+    newWay: 'Agents learn, adjust, and re-route in real time',
   },
 ] as const
 
-export const CODE_RAIN_LINES = [
-  'agent.research() → insights[3]',
-  'pipe(insights) → marketing',
-  'agent.strategize(gaps)',
-  'emit("draft_ready")',
-  'agent.distribute()',
-  'graph.route(node_5, node_2)',
-  'agent.analyze(competitors)',
-  'state.update("strategy_v2")',
-  'agent.copywrite(brief)',
-  'pipe(content) → outreach',
-] as const
-
 // ============================================
-// Services Scenario Replay
+// Services — Claude Code-style Terminal Scenario
 // Reference: Design Spec Section 4
 // ============================================
 
-export const SCENARIO_MESSAGES = [
+export const SCENARIO_STEPS = [
   {
-    agent: 'You',
-    color: 'orange' as const,
-    text: '"Launch a product campaign for our new SaaS tool"',
+    type: 'command' as const,
+    text: 'flowkart deploy --team marketing',
   },
   {
+    type: 'agent' as const,
     agent: 'Research',
-    color: 'teal' as const,
-    text: 'Analyzed 12 competitors in the productivity space. Found 3 positioning gaps. Strongest opportunity: "automation for solo founders" ✓',
+    substeps: [
+      'Scanning 12 competitors in productivity space…',
+      'Positioning gap: "automation for solo founders"',
+      'Market brief generated ✓',
+    ],
   },
   {
+    type: 'agent' as const,
+    agent: 'Finance',
+    substeps: [
+      'Modeling campaign budget at $2,400/mo…',
+      'Projected CAC: $18 · break-even at 134 signups',
+      'Budget approved ✓',
+    ],
+  },
+  {
+    type: 'agent' as const,
     agent: 'Marketing',
-    color: 'teal' as const,
-    text: 'Targeting gap #2. Audience: founders with <5 employees. Channel mix: LinkedIn ads + 5-part email sequence. Projected reach: 12,000 qualified leads →',
+    substeps: [
+      'Reading Research brief…',
+      'Strategy: LinkedIn ads + 5-part email drip',
+      'Target locked: solo founders, <5 employees ✓',
+    ],
   },
   {
+    type: 'agent' as const,
     agent: 'Copywriter',
-    color: 'teal' as const,
-    text: 'Drafting landing page headline + hero copy. 3 email variants for A/B testing. Tone: confident, concise, founder-friendly ✓',
+    substeps: [
+      'Drafting landing page from strategy…',
+      '3 email variants queued for A/B test',
+      'Copy finalized ✓',
+    ],
   },
   {
+    type: 'agent' as const,
+    agent: 'Development',
+    substeps: [
+      'Deploying landing page to /launch…',
+      'Analytics + conversion pixels configured',
+      'Live at flowkart.com/launch ✓',
+    ],
+  },
+  {
+    type: 'agent' as const,
     agent: 'Outreach',
-    color: 'teal' as const,
-    text: 'LinkedIn campaign live — 3 ad variants. Email sequence scheduled — sends over 14 days. Tracking: UTM tags + conversion pixels active ✓',
+    substeps: [
+      'Launching 3 LinkedIn ad variants…',
+      'Email sequence scheduled — sends over 14 days',
+      'All channels active ✓',
+    ],
   },
   {
-    agent: 'Results',
-    color: 'orange' as const,
-    text: 'Campaign launched in 4 minutes. 5 agents. Zero handoff delays.',
+    type: 'result' as const,
+    text: 'Campaign deployed · 6 agents · 4 min · 0 handoffs',
   },
 ] as const

@@ -8,6 +8,7 @@ import { MagneticButton } from '@/components/ui/MagneticButton'
 import { Button } from '@/components/ui/Button'
 import { TIMING, EASING } from '@/lib/constants'
 import { LiveTerminal } from '@/components/sections/LiveTerminal'
+import Image from 'next/image'
 
 /* ---- Hero Section ---- */
 
@@ -121,9 +122,14 @@ export function Hero() {
     <section
       ref={containerRef}
       id="hero"
-      className="relative min-h-screen flex items-center justify-center px-6 pt-20 bg-cream"
+      className="relative min-h-screen flex items-center justify-center px-6 pt-20 bg-cream overflow-hidden"
     >
-      <div className="max-w-4xl mx-auto text-center">
+      {/* Ambient texture overlay */}
+      <div className="absolute inset-0 opacity-20" aria-hidden="true">
+        <Image src="/images/hero-texture.webp" alt="" fill className="object-cover" loading="eager" />
+      </div>
+
+      <div className="relative max-w-4xl mx-auto text-center">
         {/* Overline */}
         <p
           ref={overlineRef}
@@ -169,7 +175,7 @@ export function Hero() {
           style={{ visibility: 'hidden' }}
         >
           <MagneticButton>
-            <Button variant="primary" size="lg" href="#contact">
+            <Button variant="primary" size="lg" href="https://cal.com/harshsahrawat/30min" target="_blank" rel="noopener noreferrer">
               Book a Discovery Call
             </Button>
           </MagneticButton>
