@@ -1,122 +1,105 @@
 'use client'
 
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import { useGSAP } from '@gsap/react'
 import { gsap, ScrollTrigger } from '@/components/animations/gsap-register'
 import { useReducedMotion } from '@/components/animations/useReducedMotion'
-// import { WORKFLOW_NODES } from '@/lib/constants'  // Removed in Task 4
-import { EASING } from '@/lib/constants'
+import { WORKFLOW_BENEFITS } from '@/lib/constants'
+import { CodeRain } from '@/components/sections/CodeRain'
+import Image from 'next/image'
 
-// TODO Task 4: WORKFLOW_NODES removed — component will be rewritten
-const WORKFLOW_NODES: { id: string; label: string; color: 'navy' | 'teal' | 'orange'; tooltip: string }[] = []
+const BORDER_COLORS: Record<string, string> = {
+  teal: 'border-l-teal',
+  orange: 'border-l-orange',
+  cream: 'border-l-cream',
+}
 
-const NODE_COLORS = {
-  navy: 'bg-navy text-cream',
-  teal: 'bg-teal text-white',
-  orange: 'bg-orange text-white',
-} as const
+const LABEL_COLORS: Record<string, string> = {
+  teal: 'text-teal',
+  orange: 'text-orange',
+  cream: 'text-cream',
+}
 
 export function AgentWorkflow() {
   const sectionRef = useRef<HTMLElement>(null)
-  const trackRef = useRef<HTMLDivElement>(null)
+  const benefitsRef = useRef<(HTMLDivElement | null)[]>([])
+  const [activeIndex, setActiveIndex] = useState(0)
   const reducedMotion = useReducedMotion()
 
   useGSAP(
     () => {
-      if (!sectionRef.current || !trackRef.current) return
+      if (!sectionRef.current) return
 
-      const nodes = trackRef.current.querySelectorAll('.wf-node')
-      const lines = trackRef.current.querySelectorAll('.wf-line')
-
-      // Reduced motion or mobile: show everything
       if (reducedMotion) {
-        gsap.set(nodes, { autoAlpha: 1 })
-        gsap.set(lines, { scaleX: 1 })
+        // Show all benefits at full opacity
+        benefitsRef.current.forEach((el) => {
+          if (el) gsap.set(el, { opacity: 1 })
+        })
         return
       }
 
       const mm = gsap.matchMedia()
 
-      // --- DESKTOP: Pinned horizontal scroll ---
+      // --- DESKTOP: Pinned scroll with benefit highlighting ---
       mm.add('(min-width: 768px)', () => {
-        gsap.set(nodes, { autoAlpha: 0, scale: 0.8 })
-        gsap.set(lines, { scaleX: 0, transformOrigin: 'left center' })
+        // Set initial state: first benefit visible, rest dimmed
+        benefitsRef.current.forEach((el, i) => {
+          if (el) gsap.set(el, { opacity: i === 0 ? 1 : 0.3 })
+        })
 
         const tl = gsap.timeline({
           scrollTrigger: {
             trigger: sectionRef.current,
             start: 'top top',
-            end: '+=250%',
+            end: '+=300%',
             pin: true,
             scrub: 1,
             anticipatePin: 1,
           },
         })
 
-        // Reveal nodes and lines sequentially
-        nodes.forEach((node, i) => {
-          const t = i / (nodes.length - 1)
+        // Animate through 4 benefits
+        WORKFLOW_BENEFITS.forEach((_, i) => {
+          if (i === 0) return // First is already visible
 
+          const t = i / (WORKFLOW_BENEFITS.length - 1)
+
+          // Dim previous benefit
           tl.to(
-            node,
-            {
-              autoAlpha: 1,
-              scale: 1,
-              duration: 0.12,
-              ease: EASING.entrance,
-            },
-            t * 0.85,
+            benefitsRef.current[i - 1],
+            { opacity: 0.3, duration: 0.1 },
+            t - 0.05,
           )
 
-          if (i < lines.length) {
-            tl.to(
-              lines[i],
-              { scaleX: 1, duration: 0.08, ease: 'none' },
-              t * 0.85 + 0.06,
-            )
-          }
-        })
+          // Highlight current benefit
+          tl.to(
+            benefitsRef.current[i],
+            { opacity: 1, duration: 0.1 },
+            t,
+          )
 
-        // Final glow
-        tl.to(
-          nodes,
-          { boxShadow: '0 0 24px rgba(21,97,109,0.3)', duration: 0.15 },
-          0.9,
-        )
+          // Update active index for CodeRain
+          tl.call(() => setActiveIndex(i), [], t)
+        })
       })
 
-      // --- MOBILE: Vertical stack with scroll reveals ---
+      // --- MOBILE: Standard scroll reveals ---
       mm.add('(max-width: 767px)', () => {
-        nodes.forEach((node, i) => {
+        benefitsRef.current.forEach((el) => {
+          if (!el) return
           gsap.fromTo(
-            node,
-            { autoAlpha: 0, y: 30 },
+            el,
+            { autoAlpha: 0, y: 20 },
             {
               autoAlpha: 1,
               y: 0,
               duration: 0.6,
-              ease: EASING.entrance,
               scrollTrigger: {
-                trigger: node,
+                trigger: el,
                 start: 'top 85%',
               },
             },
           )
-
-          if (i < lines.length) {
-            gsap.fromTo(
-              lines[i],
-              { scaleY: 0, transformOrigin: 'top center' },
-              {
-                scaleY: 1,
-                duration: 0.4,
-                scrollTrigger: {
-                  trigger: lines[i],
-                  start: 'top 85%',
-                },
-              },
-            )
-          }
         })
       })
     },
@@ -127,65 +110,67 @@ export function AgentWorkflow() {
     <section
       ref={sectionRef}
       id="workflow"
-      className="relative bg-cream-light overflow-hidden"
+      className="relative bg-navy overflow-hidden"
     >
-      {/* Section Title */}
+      {/* Section Header */}
       <div className="pt-24 pb-16 px-6 text-center">
         <p className="font-mono text-teal text-[0.875rem] uppercase tracking-[0.12em] mb-4">
-          Multi-Agent Orchestration
+          Powered by LangChain &amp; LangGraph
         </p>
         <h2
-          className="font-display font-semibold text-navy"
+          className="font-display font-semibold text-cream"
           style={{
             fontSize: 'clamp(1.75rem, 1rem + 2.5vw, 3.5rem)',
             letterSpacing: '-0.02em',
             lineHeight: 1.1,
           }}
         >
-          See how your AI team works
+          Agents that think, communicate,
+          <br className="hidden sm:block" />
+          and adapt
         </h2>
       </div>
 
-      {/* Workflow Track */}
-      <div
-        ref={trackRef}
-        className="relative max-w-6xl mx-auto px-6 pb-24 min-h-[50vh] flex items-center"
-      >
-        <div className="w-full flex flex-col md:flex-row items-center justify-between gap-4 md:gap-0">
-          {WORKFLOW_NODES.map((node, i) => (
-            <div key={node.id} className="flex flex-col md:flex-row items-center">
-              {/* Node — hover: scale 1.08 + tooltip fade (Section 5.7) */}
-              <div
-                className="wf-node group flex flex-col items-center gap-3 opacity-0"
-              >
-                <div
-                  className={`w-20 h-20 lg:w-24 lg:h-24 rounded-2xl flex items-center justify-center transition-all duration-200 group-hover:scale-[1.08] ${NODE_COLORS[node.color]}`}
-                >
-                  <span className="font-mono text-xs lg:text-sm font-bold text-center leading-tight px-1">
-                    {node.label.split(' ')[0]}
-                  </span>
-                </div>
-                <span className="font-body text-sm font-medium text-navy text-center max-w-[120px]">
-                  {node.label}
-                </span>
-                {node.tooltip && (
-                  <span className="font-body text-xs text-sienna/60 text-center max-w-[140px] opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                    {node.tooltip}
-                  </span>
-                )}
-              </div>
-
-              {/* Connection Line (between nodes) */}
-              {i < WORKFLOW_NODES.length - 1 && (
-                <>
-                  {/* Desktop: horizontal line */}
-                  <div className="wf-line hidden md:block w-12 lg:w-20 h-0.5 bg-teal/30 mx-2 scale-x-0" />
-                  {/* Mobile: vertical line */}
-                  <div className="wf-line md:hidden w-0.5 h-8 bg-teal/30 my-1 scale-y-0" />
-                </>
-              )}
+      {/* Split Layout */}
+      <div className="max-w-6xl mx-auto px-6 pb-24 flex flex-col md:flex-row gap-12 md:gap-8 min-h-[60vh] items-center">
+        {/* Left: Benefits Stack (60%) */}
+        <div className="w-full md:w-[60%] flex flex-col gap-8">
+          {WORKFLOW_BENEFITS.map((benefit, i) => (
+            <div
+              key={benefit.id}
+              ref={(el) => { benefitsRef.current[i] = el }}
+              className={`border-l-[3px] ${BORDER_COLORS[benefit.borderColor]} pl-4 transition-opacity`}
+            >
+              <p className={`font-mono text-[0.6875rem] uppercase tracking-[0.1em] mb-1 ${LABEL_COLORS[benefit.borderColor]}`}>
+                {benefit.category}
+              </p>
+              <h3 className="font-display font-semibold text-cream text-lg mb-1">
+                {benefit.headline}
+              </h3>
+              <p className="font-body text-cream/60 text-sm leading-relaxed">
+                {benefit.description}
+              </p>
             </div>
           ))}
+        </div>
+
+        {/* Right: OpenArt Background + Code Rain (40%) */}
+        <div className="w-full md:w-[40%] relative h-[200px] md:h-[400px] rounded-xl overflow-hidden">
+          {/* OpenArt Background */}
+          <div className="absolute inset-0 opacity-50">
+            <Image
+              src="/images/workflow-bg.webp"
+              alt=""
+              fill
+              sizes="(max-width: 768px) 100vw, 40vw"
+              className="object-cover"
+              aria-hidden="true"
+              loading="lazy"
+            />
+          </div>
+
+          {/* Code Rain Overlay */}
+          <CodeRain activeIndex={activeIndex} reducedMotion={reducedMotion} />
         </div>
       </div>
     </section>

@@ -87,6 +87,24 @@ h1, h2, h3, h4, h5, h6 {
   background-size: 100% 1.5px;
 }
 
+/* --- Code Rain Gradient Mask --- */
+.mask-fade-y {
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    black 15%,
+    black 85%,
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    black 15%,
+    black 85%,
+    transparent 100%
+  );
+}
+
 /* --- Reduced Motion Global Override --- */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
