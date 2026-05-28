@@ -33,59 +33,39 @@ export const BREAKPOINTS = {
 // Reference: CREATIVE-BRIEF.md Section 6
 // ============================================
 
+// [TODO] Replace placeholder copy below with TaskOrbit's real content once the
+// positioning is finalized. Array lengths / shapes are kept so the existing
+// animations keep working — only the human-readable strings are placeholders.
+
 export const AGENTS = [
-  {
-    name: 'Research',
-    description: 'Analyzes market data, competitors, and trends to give your team an information edge.',
-    icon: 'search',
-  },
-  {
-    name: 'Marketing',
-    description: 'Builds data-driven strategies and campaigns from research insights.',
-    icon: 'megaphone',
-  },
-  {
-    name: 'Finance',
-    description: 'Forecasts revenue, tracks budgets, and surfaces financial insights automatically.',
-    icon: 'chart',
-  },
-  {
-    name: 'Outreach',
-    description: 'Executes multi-channel distribution — email, social, partnerships — at scale.',
-    icon: 'send',
-  },
-  {
-    name: 'Development',
-    description: 'Writes, reviews, and deploys code. Maintains your technical infrastructure.',
-    icon: 'code',
-  },
-  {
-    name: 'Copywriter',
-    description: 'Creates on-brand content aligned with strategy — from blogs to ad copy.',
-    icon: 'pen',
-  },
+  { name: '[TODO: item 1]', description: '[TODO: description]', icon: 'search' },
+  { name: '[TODO: item 2]', description: '[TODO: description]', icon: 'megaphone' },
+  { name: '[TODO: item 3]', description: '[TODO: description]', icon: 'chart' },
+  { name: '[TODO: item 4]', description: '[TODO: description]', icon: 'send' },
+  { name: '[TODO: item 5]', description: '[TODO: description]', icon: 'code' },
+  { name: '[TODO: item 6]', description: '[TODO: description]', icon: 'pen' },
 ] as const
 
 export const PROCESS_STEPS = [
   {
     number: '01',
-    verb: 'Discover',
-    title: 'Discovery Call',
-    description: 'We learn your business, workflows, and where AI can help most.',
+    verb: '[TODO: verb]',
+    title: '[TODO: step title]',
+    description: '[TODO: step description]',
     color: 'teal', // #15616D
   },
   {
     number: '02',
-    verb: 'Design',
-    title: 'Team Design',
-    description: 'We architect your custom multi-agent system around your specific needs.',
+    verb: '[TODO: verb]',
+    title: '[TODO: step title]',
+    description: '[TODO: step description]',
     color: 'orange', // #FF7D00
   },
   {
     number: '03',
-    verb: 'Deploy',
-    title: 'Deploy & Optimize',
-    description: 'Your AI team goes live. We monitor, tune, and scale as you grow.',
+    verb: '[TODO: verb]',
+    title: '[TODO: step title]',
+    description: '[TODO: step description]',
     color: 'cream', // #FFECD1
   },
 ] as const
@@ -98,30 +78,30 @@ export const PROCESS_STEPS = [
 
 export const TERMINAL_COMMANDS = [
   {
-    command: 'flowkart deploy --team marketing',
+    command: 'taskorbit deploy --team alpha',
     agents: [
-      { name: 'Research', status: 'analyzing market data...' },
-      { name: 'Marketing', status: 'building campaign strategy...' },
-      { name: 'Copywriter', status: 'drafting landing page copy...' },
-      { name: 'Outreach', status: 'scheduling email sequences...' },
+      { name: '[TODO: agent 1]', status: '[TODO: status]' },
+      { name: '[TODO: agent 2]', status: '[TODO: status]' },
+      { name: '[TODO: agent 3]', status: '[TODO: status]' },
+      { name: '[TODO: agent 4]', status: '[TODO: status]' },
     ],
   },
   {
-    command: 'flowkart deploy --team sales',
+    command: 'taskorbit deploy --team beta',
     agents: [
-      { name: 'Research', status: 'scanning prospect data...' },
-      { name: 'Finance', status: 'modeling deal projections...' },
-      { name: 'Outreach', status: 'personalizing outreach...' },
-      { name: 'Copywriter', status: 'writing follow-up emails...' },
+      { name: '[TODO: agent 1]', status: '[TODO: status]' },
+      { name: '[TODO: agent 2]', status: '[TODO: status]' },
+      { name: '[TODO: agent 3]', status: '[TODO: status]' },
+      { name: '[TODO: agent 4]', status: '[TODO: status]' },
     ],
   },
   {
-    command: 'flowkart deploy --team content',
+    command: 'taskorbit deploy --team gamma',
     agents: [
-      { name: 'Research', status: 'identifying trending topics...' },
-      { name: 'Copywriter', status: 'drafting blog series...' },
-      { name: 'Marketing', status: 'optimizing for distribution...' },
-      { name: 'Development', status: 'deploying CMS updates...' },
+      { name: '[TODO: agent 1]', status: '[TODO: status]' },
+      { name: '[TODO: agent 2]', status: '[TODO: status]' },
+      { name: '[TODO: agent 3]', status: '[TODO: status]' },
+      { name: '[TODO: agent 4]', status: '[TODO: status]' },
     ],
   },
 ] as const
@@ -134,24 +114,24 @@ export const TERMINAL_COMMANDS = [
 export const COMPARISON_ROWS = [
   {
     id: 'quality',
-    label: 'Quality',
+    label: '[TODO: label]',
     icon: '🎯',
-    oldWay: 'Generic, one-size-fits-all outputs',
-    newWay: 'Research-backed content tailored to your market',
+    oldWay: '[TODO: old way]',
+    newWay: '[TODO: new way]',
   },
   {
     id: 'scale',
-    label: 'Scale',
+    label: '[TODO: label]',
     icon: '⚡',
-    oldWay: 'One task, one tool, one output',
-    newWay: 'Entire workflows running in parallel',
+    oldWay: '[TODO: old way]',
+    newWay: '[TODO: new way]',
   },
   {
     id: 'adaptability',
-    label: 'Adaptability',
+    label: '[TODO: label]',
     icon: '🔄',
-    oldWay: 'Breaks when things change',
-    newWay: 'Agents learn, adjust, and re-route in real time',
+    oldWay: '[TODO: old way]',
+    newWay: '[TODO: new way]',
   },
 ] as const
 
@@ -163,64 +143,64 @@ export const COMPARISON_ROWS = [
 export const SCENARIO_STEPS = [
   {
     type: 'command' as const,
-    text: 'flowkart deploy --team marketing',
+    text: 'taskorbit deploy --team alpha',
   },
   {
     type: 'agent' as const,
-    agent: 'Research',
+    agent: '[TODO: agent 1]',
     substeps: [
-      'Scanning 12 competitors in productivity space…',
-      'Positioning gap: "automation for solo founders"',
-      'Market brief generated ✓',
+      '[TODO: substep]',
+      '[TODO: substep]',
+      '[TODO: substep] ✓',
     ],
   },
   {
     type: 'agent' as const,
-    agent: 'Finance',
+    agent: '[TODO: agent 2]',
     substeps: [
-      'Modeling campaign budget at $2,400/mo…',
-      'Projected CAC: $18 · break-even at 134 signups',
-      'Budget approved ✓',
+      '[TODO: substep]',
+      '[TODO: substep]',
+      '[TODO: substep] ✓',
     ],
   },
   {
     type: 'agent' as const,
-    agent: 'Marketing',
+    agent: '[TODO: agent 3]',
     substeps: [
-      'Reading Research brief…',
-      'Strategy: LinkedIn ads + 5-part email drip',
-      'Target locked: solo founders, <5 employees ✓',
+      '[TODO: substep]',
+      '[TODO: substep]',
+      '[TODO: substep] ✓',
     ],
   },
   {
     type: 'agent' as const,
-    agent: 'Copywriter',
+    agent: '[TODO: agent 4]',
     substeps: [
-      'Drafting landing page from strategy…',
-      '3 email variants queued for A/B test',
-      'Copy finalized ✓',
+      '[TODO: substep]',
+      '[TODO: substep]',
+      '[TODO: substep] ✓',
     ],
   },
   {
     type: 'agent' as const,
-    agent: 'Development',
+    agent: '[TODO: agent 5]',
     substeps: [
-      'Deploying landing page to /launch…',
-      'Analytics + conversion pixels configured',
-      'Live at flowkart.com/launch ✓',
+      '[TODO: substep]',
+      '[TODO: substep]',
+      '[TODO: substep] ✓',
     ],
   },
   {
     type: 'agent' as const,
-    agent: 'Outreach',
+    agent: '[TODO: agent 6]',
     substeps: [
-      'Launching 3 LinkedIn ad variants…',
-      'Email sequence scheduled — sends over 14 days',
-      'All channels active ✓',
+      '[TODO: substep]',
+      '[TODO: substep]',
+      '[TODO: substep] ✓',
     ],
   },
   {
     type: 'result' as const,
-    text: 'Campaign deployed · 6 agents · 4 min · 0 handoffs',
+    text: '[TODO: result summary]',
   },
 ] as const

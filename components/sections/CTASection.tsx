@@ -89,15 +89,14 @@ export function CTASection() {
             color: reducedMotion ? '#FFECD1' : '#001524',
           }}
         >
-          Ready to build your AI team?
+          [TODO: CTA heading]
         </h2>
         <p
           ref={bodyRef}
           className="font-body text-lg mb-10 max-w-xl mx-auto leading-relaxed"
           style={{ color: reducedMotion ? 'rgba(255,236,209,0.8)' : '#78290F' }}
         >
-          Book a discovery call and we&apos;ll design a custom multi-agent
-          system for your business in 30 minutes.
+          [TODO: CTA supporting copy]
         </p>
         <MagneticButton>
           <Button
@@ -108,7 +107,7 @@ export function CTASection() {
             rel="noopener noreferrer"
             className="bg-orange text-white hover:bg-orange/90"
           >
-            Book a Discovery Call
+            [TODO: CTA button]
           </Button>
         </MagneticButton>
       </div>

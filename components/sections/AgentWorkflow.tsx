@@ -133,7 +133,7 @@ export function AgentWorkflow() {
         {/* Section Header */}
         <div className="text-center mb-16 md:mb-20">
           <p className="font-mono text-orange text-[0.875rem] uppercase tracking-[0.12em] mb-4">
-            Why an AI Team?
+            [TODO: overline]
           </p>
           <h2
             className="font-display font-semibold text-cream"
@@ -143,10 +143,10 @@ export function AgentWorkflow() {
               lineHeight: 1.1,
             }}
           >
-            They coordinate like humans.
+            [TODO: section heading line one]
             <br />
-            They execute like{' '}
-            <span className="text-orange">machines.</span>
+            [TODO: section heading line two]{' '}
+            <span className="text-orange">[TODO: highlight].</span>
           </h2>
         </div>
 
@@ -205,7 +205,7 @@ export function AgentWorkflow() {
         <div ref={closingRef} className="mt-14 md:mt-16 text-center">
           <div className="w-12 h-0.5 bg-gradient-to-r from-teal to-transparent mx-auto mb-6" />
           <p className="font-body text-base text-cream/70 italic">
-            Not just smarter tools — a team that thinks together.
+            [TODO: closing line]
           </p>
         </div>
       </div>

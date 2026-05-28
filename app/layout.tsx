@@ -4,33 +4,25 @@ import { LenisProvider } from '@/components/layout/LenisProvider'
 import { Header } from '@/components/layout/Header'
 import './globals.css'
 
+// [TODO] Replace placeholder taglines/descriptions with TaskOrbit's real
+// positioning once finalized. Domain (flowkart.ai) kept until the new domain is set up.
 export const metadata: Metadata = {
-  title: 'Flowkart — AI Native Agency | Custom Multi-Agent Teams',
-  description:
-    'Flowkart builds custom multi-agent AI teams using LangChain & LangGraph. Six specialized agents — Research, Marketing, Finance, Outreach, Development, Copywriting — working as one team for your business.',
-  keywords: [
-    'AI agency',
-    'multi-agent systems',
-    'LangChain',
-    'LangGraph',
-    'AI automation',
-    'custom AI teams',
-  ],
-  authors: [{ name: 'Flowkart' }],
+  title: 'TaskOrbit — [TODO: tagline]',
+  description: '[TODO: meta description]',
+  keywords: ['[TODO: keyword]'],
+  authors: [{ name: 'TaskOrbit' }],
   openGraph: {
-    title: 'Flowkart — AI Native Agency',
-    description:
-      'Custom multi-agent orchestration with LangChain & LangGraph. We build AI teams that run your business.',
+    title: 'TaskOrbit — [TODO: tagline]',
+    description: '[TODO: Open Graph description]',
     url: 'https://flowkart.ai',
-    siteName: 'Flowkart',
+    siteName: 'TaskOrbit',
     type: 'website',
     locale: 'en_US',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Flowkart — AI Native Agency',
-    description:
-      'Custom multi-agent orchestration with LangChain & LangGraph.',
+    title: 'TaskOrbit — [TODO: tagline]',
+    description: '[TODO: Twitter description]',
   },
   robots: {
     index: true,
@@ -48,16 +40,16 @@ export default function RootLayout({
     '@graph': [
       {
         '@type': 'Organization',
-        name: 'Flowkart',
+        name: 'TaskOrbit',
+        legalName: 'TaskOrbit Technologies Private Limited',
         url: 'https://flowkart.ai',
-        description:
-          'AI Native Agency building custom multi-agent teams using LangChain & LangGraph.',
+        description: '[TODO: organization description]',
         email: 'hello@flowkart.ai',
         sameAs: [],
       },
       {
         '@type': 'WebSite',
-        name: 'Flowkart',
+        name: 'TaskOrbit',
         url: 'https://flowkart.ai',
       },
     ],

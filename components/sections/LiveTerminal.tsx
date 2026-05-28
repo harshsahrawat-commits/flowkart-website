@@ -151,7 +151,7 @@ export const LiveTerminal = forwardRef<HTMLDivElement, LiveTerminalProps>(
         }}
         className="mt-10 max-w-md mx-auto bg-navy rounded-xl shadow-2xl overflow-hidden"
         style={{ visibility: 'hidden' }}
-        aria-label="AI agents processing a task — Research, Marketing, Copywriter, and Outreach agents collaborating"
+        aria-label="[TODO: terminal accessible description]"
       >
         {/* Window Chrome */}
         <div className="flex items-center gap-1.5 px-4 py-2.5 border-b border-teal/10">
@@ -159,7 +159,7 @@ export const LiveTerminal = forwardRef<HTMLDivElement, LiveTerminalProps>(
           <div className="w-2.5 h-2.5 rounded-full bg-[#ffbd2e]" />
           <div className="w-2.5 h-2.5 rounded-full bg-[#28ca41]" />
           <span className="ml-2 font-mono text-[10px] text-cream/30">
-            flowkart-agent-system
+            taskorbit-agent-system
           </span>
         </div>
 
@@ -203,7 +203,7 @@ export const LiveTerminal = forwardRef<HTMLDivElement, LiveTerminalProps>(
 
         {/* Screen reader text */}
         <span className="sr-only">
-          AI agents processing a marketing task — {currentCommand.agents.map((a) => a.name).join(', ')} agents collaborating.
+          [TODO: terminal screen-reader summary] — {currentCommand.agents.map((a) => a.name).join(', ')}.
         </span>
       </div>
     )

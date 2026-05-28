@@ -68,9 +68,9 @@ export function Hero() {
           0.5,
         )
 
-        // 1.1s — "business." scale punch
+        // 1.1s — highlighted keyword scale punch (matches the highlighted <span> word below)
         const businessWord = split.words.find((w) =>
-          w.textContent?.trim().startsWith('business'),
+          w.textContent?.trim().startsWith('keyword'),
         )
         if (businessWord) {
           tl.fromTo(
@@ -136,7 +136,7 @@ export function Hero() {
           className="font-mono text-teal text-[0.875rem] uppercase tracking-[0.12em] mb-6"
           style={{ visibility: 'hidden' }}
         >
-          AI Native Agency
+          [TODO: overline]
         </p>
 
         {/* Headline */}
@@ -150,8 +150,8 @@ export function Hero() {
             visibility: 'hidden',
           }}
         >
-          We build AI teams <br className="hidden sm:block" />
-          that run your <span className="text-teal">business.</span>
+          [TODO: headline line one] <br className="hidden sm:block" />
+          [TODO: headline line two] <span className="text-teal">keyword.</span>
         </h1>
 
         {/* Body */}
@@ -164,8 +164,7 @@ export function Hero() {
             visibility: 'hidden',
           }}
         >
-          Custom multi-agent orchestration with LangChain &amp; LangGraph. Six
-          specialized agents working as one team.
+          [TODO: hero subheading / body copy]
         </p>
 
         {/* CTAs */}
@@ -176,11 +175,11 @@ export function Hero() {
         >
           <MagneticButton>
             <Button variant="primary" size="lg" href="https://cal.com/harshsahrawat/30min" target="_blank" rel="noopener noreferrer">
-              Book a Discovery Call
+              [TODO: primary CTA]
             </Button>
           </MagneticButton>
           <Button variant="outline" size="lg" href="#workflow">
-            See How It Works
+            [TODO: secondary CTA]
           </Button>
         </div>
 

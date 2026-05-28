@@ -131,7 +131,7 @@ export function Process() {
         {/* Section Header */}
         <div className="text-center mb-12">
           <p className="font-mono text-orange text-[1rem] uppercase tracking-[0.12em] mb-4">
-            How It Works
+            [TODO: overline]
           </p>
           <h2
             className="font-display font-semibold text-cream"
@@ -141,7 +141,7 @@ export function Process() {
               lineHeight: 1.1,
             }}
           >
-            Three steps to your AI team
+            [TODO: section heading]
           </h2>
         </div>
 

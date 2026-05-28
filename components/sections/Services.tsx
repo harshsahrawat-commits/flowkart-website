@@ -164,7 +164,7 @@ export function Services() {
       {/* Section Header */}
       <div className="relative pt-24 pb-16 px-6 text-center">
         <p className="font-mono text-teal text-[0.875rem] uppercase tracking-[0.12em] mb-4">
-          See It In Action
+          [TODO: overline]
         </p>
         <h2
           className="font-display font-semibold text-navy"
@@ -174,7 +174,7 @@ export function Services() {
             lineHeight: 1.1,
           }}
         >
-          Watch your AI team work
+          [TODO: section heading]
         </h2>
       </div>
 

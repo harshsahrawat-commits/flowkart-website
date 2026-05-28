@@ -76,7 +76,7 @@ export function Header() {
             href="#"
             className="font-display font-semibold text-xl text-navy tracking-[0.04em]"
           >
-            FLOWKART
+            TASKORBIT
           </a>
 
           {/* Desktop Nav */}

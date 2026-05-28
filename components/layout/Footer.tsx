@@ -1,13 +1,14 @@
+// [TODO] Replace with TaskOrbit's real footer navigation once positioning is finalized.
 const FOOTER_LINKS = {
-  agents: [
-    'Research Agent',
-    'Marketing Agent',
-    'Finance Agent',
-    'Outreach Agent',
-    'Dev Agent',
-    'Copywriting Agent',
+  offerings: [
+    '[TODO: link 1]',
+    '[TODO: link 2]',
+    '[TODO: link 3]',
+    '[TODO: link 4]',
+    '[TODO: link 5]',
+    '[TODO: link 6]',
   ],
-  company: ['About', 'How It Works', 'Contact'],
+  company: ['[TODO: link 1]', '[TODO: link 2]', '[TODO: link 3]'],
 }
 
 export function Footer() {
@@ -18,21 +19,20 @@ export function Footer() {
           {/* Logo + tagline */}
           <div className="md:col-span-1">
             <span className="font-display font-semibold text-lg tracking-[0.04em]">
-              FLOWKART
+              TASKORBIT
             </span>
             <p className="mt-3 text-tan text-sm leading-relaxed">
-              AI Native Agency. Custom multi-agent teams that run your
-              business.
+              [TODO: TaskOrbit tagline]
             </p>
           </div>
 
-          {/* Agents */}
+          {/* Offerings */}
           <div>
             <h4 className="font-body font-bold text-xs uppercase tracking-widest text-cream/50 mb-4">
-              Agents
+              [TODO: column heading]
             </h4>
             <ul className="space-y-2">
-              {FOOTER_LINKS.agents.map((item) => (
+              {FOOTER_LINKS.offerings.map((item) => (
                 <li key={item}>
                   <a
                     href="#services"
@@ -54,7 +54,7 @@ export function Footer() {
               {FOOTER_LINKS.company.map((item) => (
                 <li key={item}>
                   <a
-                    href={`#${item.toLowerCase().replace(/\s+/g, '-')}`}
+                    href="#"
                     className="text-tan text-sm hover:text-cream transition-colors duration-300"
                   >
                     {item}
@@ -69,19 +69,28 @@ export function Footer() {
             <h4 className="font-body font-bold text-xs uppercase tracking-widest text-cream/50 mb-4">
               Get in Touch
             </h4>
+            {/* [TODO] Email kept from previous site until TaskOrbit's domain/inbox is set up. */}
             <a
               href="mailto:hello@flowkart.ai"
               className="text-tan text-sm hover:text-cream transition-colors duration-300"
             >
               hello@flowkart.ai
             </a>
+            {/* [TODO] Add TaskOrbit's real contact + social details once available. */}
+            <ul className="mt-4 space-y-2 text-tan text-sm">
+              <li>[TODO: phone number]</li>
+              <li>[TODO: LinkedIn URL]</li>
+              <li>[TODO: X / Twitter URL]</li>
+              <li>[TODO: registered office address]</li>
+            </ul>
           </div>
         </div>
 
         {/* Bottom bar */}
         <div className="mt-16 pt-8 border-t border-cream/10 flex flex-col sm:flex-row justify-between items-center gap-4">
           <p className="text-cream/40 text-xs">
-            &copy; {new Date().getFullYear()} Flowkart. All rights reserved.
+            &copy; {new Date().getFullYear()} TaskOrbit Technologies Private
+            Limited. All rights reserved.
           </p>
           <div className="flex gap-6">
             <a
