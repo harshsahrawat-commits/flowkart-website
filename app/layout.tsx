@@ -52,7 +52,7 @@ export default function RootLayout({
         url: 'https://flowkart.io',
         description:
           'AI Native Agency building custom multi-agent teams using LangChain & LangGraph.',
-        email: 'hello@flowkart.io',
+        email: 'harshsahrawat@flowkart.io',
         sameAs: [],
       },
       {
