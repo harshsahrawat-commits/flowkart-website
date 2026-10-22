@@ -207,7 +207,7 @@ export const SCENARIO_STEPS = [
     substeps: [
       'Deploying landing page to /launch…',
       'Analytics + conversion pixels configured',
-      'Live at flowkart.com/launch ✓',
+      'Live at flowkart.io/launch ✓',
     ],
   },
   {

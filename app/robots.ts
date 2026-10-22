@@ -6,6 +6,6 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: '*',
       allow: '/',
     },
-    sitemap: 'https://flowkart.ai/sitemap.xml',
+    sitemap: 'https://flowkart.io/sitemap.xml',
   }
 }
