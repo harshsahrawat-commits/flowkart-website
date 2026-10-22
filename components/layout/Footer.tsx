@@ -70,10 +70,10 @@ export function Footer() {
               Get in Touch
             </h4>
             <a
-              href="mailto:hello@flowkart.ai"
+              href="mailto:hello@flowkart.io"
               className="text-tan text-sm hover:text-cream transition-colors duration-300"
             >
-              hello@flowkart.ai
+              hello@flowkart.io
             </a>
           </div>
         </div>

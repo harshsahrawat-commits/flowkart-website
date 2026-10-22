@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     title: 'Flowkart — AI Native Agency',
     description:
       'Custom multi-agent orchestration with LangChain & LangGraph. We build AI teams that run your business.',
-    url: 'https://flowkart.ai',
+    url: 'https://flowkart.io',
     siteName: 'Flowkart',
     type: 'website',
     locale: 'en_US',
@@ -49,16 +49,16 @@ export default function RootLayout({
       {
         '@type': 'Organization',
         name: 'Flowkart',
-        url: 'https://flowkart.ai',
+        url: 'https://flowkart.io',
         description:
           'AI Native Agency building custom multi-agent teams using LangChain & LangGraph.',
-        email: 'hello@flowkart.ai',
+        email: 'hello@flowkart.io',
         sameAs: [],
       },
       {
         '@type': 'WebSite',
         name: 'Flowkart',
-        url: 'https://flowkart.ai',
+        url: 'https://flowkart.io',
       },
     ],
   }
